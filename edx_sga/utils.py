@@ -9,7 +9,7 @@ from functools import partial
 
 import pytz
 from django.conf import settings
-from django.core.files.storage import default_storage as django_default_storage, get_storage_class
+from django.core.files.storage import default_storage as django_default_storage
 from django.utils.module_loading import import_string
 from edx_sga.constants import BLOCK_SIZE
 
