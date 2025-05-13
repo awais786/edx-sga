@@ -58,11 +58,13 @@ def get_file_modified_time_utc(file_path):
     """
     Gets the UTC timezone-aware modified time of a file at the given file path
     """
+    defaustorage_backend = settings.STORAGES.get('default', {}).get('BACKEND', '')
+
     file_timezone = (
         # time.tzname returns a 2 element tuple:
         #   (local non-DST timezone, e.g.: 'EST', local DST timezone, e.g.: 'EDT')
         pytz.timezone(time.tzname[0])
-        if settings.DEFAULT_FILE_STORAGE
+        if defaustorage_backend
         == "django.core.files.storage.FileSystemStorage"
         else pytz.utc
     )

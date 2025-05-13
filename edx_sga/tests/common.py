@@ -33,11 +33,11 @@ class TempfileMixin(unittest.TestCase):
         """
         Creates a temp directory and fixes Django settings
         """
+        storage_backend = settings.STORAGES.get('default', {}).get('BACKEND', '')
         cls._original_media_root = settings.MEDIA_ROOT
-        cls._original_file_storage = settings.DEFAULT_FILE_STORAGE
+        cls._original_file_storage = storage_backend
         cls.temp_directory = mkdtemp()
         settings.MEDIA_ROOT = cls.temp_directory
-        settings.DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
         cls.default_storage = default_storage
 
     @classmethod
@@ -47,7 +47,6 @@ class TempfileMixin(unittest.TestCase):
         """
         shutil.rmtree(cls.temp_directory, ignore_errors=True)
         settings.MEDIA_ROOT = cls._original_media_root
-        settings.DEFAULT_FILE_STORAGE = cls._original_file_storage
         del cls._original_media_root
         del cls._original_file_storage
 
