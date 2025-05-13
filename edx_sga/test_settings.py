@@ -73,4 +73,3 @@ STATIC_URL = "/static/"
 TECH_SUPPORT_EMAIL = "support@example.com"
 # For xblock-sdk workbench
 WORKBENCH = {}
-
