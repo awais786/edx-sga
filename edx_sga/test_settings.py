@@ -6,7 +6,14 @@ Django settings for edx_sga project.
 
 import os
 
-DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "k(g$9p*x^a=t_lf$%=b*3$$ipg1g0tm!^pws0@g)u+v@&$657n"
 DEBUG = True
@@ -61,9 +68,9 @@ DATABASES = {
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
-USE_L10N = True
 USE_TZ = True
 STATIC_URL = "/static/"
 TECH_SUPPORT_EMAIL = "support@example.com"
 # For xblock-sdk workbench
 WORKBENCH = {}
+

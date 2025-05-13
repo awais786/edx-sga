@@ -10,6 +10,7 @@ from functools import partial
 import pytz
 from django.conf import settings
 from django.core.files.storage import default_storage as django_default_storage, get_storage_class
+from django.utils.module_loading import import_string
 from edx_sga.constants import BLOCK_SIZE
 
 
@@ -26,14 +27,24 @@ def get_default_storage():
     #        STORAGE_KWARGS: {}
     #    }
     sga_storage_settings = getattr(settings, "SGA_STORAGE_SETTINGS", None)
-
+    # Retrieve the storage class path and kwargs from the settings
     if sga_storage_settings:
-        return get_storage_class(
+        return import_string(
             sga_storage_settings['STORAGE_CLASS']
         )(**sga_storage_settings['STORAGE_KWARGS'])
 
-    # If settings not defined, use default_storage from Django
-    return django_default_storage
+
+    # now pick the default storage systems for django4 and 5.
+    storage_class_path = (
+            getattr(settings, 'DEFAULT_FILE_STORAGE', None) or
+            getattr(settings, 'STORAGES', {}).get('default', {}).get('BACKEND') or
+            'django.core.files.storage.FileSystemStorage'
+    )
+
+    options = getattr(settings, 'STORAGES', {}).get('default', {}).get('OPTIONS', {})
+    storage_class = import_string(storage_class_path)
+    return storage_class(**options)
+
 
 default_storage = get_default_storage()
 
