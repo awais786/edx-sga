@@ -23,9 +23,12 @@ class S3Boto3TestCase(TestCase):
         storage = get_default_storage()
         storage_class = storage.__class__
 
-        self.assertEqual(
-            'django.core.files.storage.filesystem.FileSystemStorage',
+        self.assertIn(
             f"{storage_class.__module__}.{storage_class.__name__}",
+            [
+                'django.core.files.storage.FileSystemStorage',
+                'django.core.files.storage.filesystem.FileSystemStorage',
+            ]
         )
 
     @override_settings(SGA_STORAGE_SETTINGS={
