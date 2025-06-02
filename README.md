@@ -31,11 +31,14 @@ the SGA XBlock in devstack.**
     storages system. You can now define all your custom or third-party storage backends using
     the STORAGES dictionary in your settings. 
     
+    Do not use both DEFAULT_FILE_STORAGE and STORAGES in your settings.
+    They are mutually exclusive, and you should use only one of these options.
 
     ```
     MEDIA_ROOT = "/edx/var/edxapp/uploads"
+   
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    
+    or
     STORAGES = {
         # The default file storage backend (fallback for user-uploaded media, etc.)
         "default": {
@@ -58,7 +61,7 @@ the SGA XBlock in devstack.**
         },
     }
     ```
-    
+
     You can also configure S3 to be used as the file storage backend. Ask a fellow developer or devops for the
     correct settings to enable this. If you're using ansible to provision devstack, you may want to refer to 
     [this edX article on configuring data storage](https://openedx.atlassian.net/wiki/spaces/OpenOPS/pages/112001105/Configuring+Data+Storage).
